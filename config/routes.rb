@@ -1,12 +1,9 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: 'users/sessions' }
-
-  resources :channels, only: [:index, :create] do
-    resources :messages, only: [:create]
+  resources :channels do
+    resources :discussions do
+      resources :messages, only: [:index, :create, :destroy]
+    end
   end
 
-  resources :posts, only: [:index, :create, :show]
-  resources :notifications, only: [:index]
-
-  mount ActionCable.server => '/cable'
+  devise_for :users
 end
